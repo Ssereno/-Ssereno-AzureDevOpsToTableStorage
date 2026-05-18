@@ -1,0 +1,109 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Sync: Full Mode (All Projects)",
+      "type": "shell",
+      "command": "dotnet",
+      "args": [
+        "run",
+        "--project",
+        "${workspaceFolder}/AzureDevOpsToPoweBI/AzureDevOpsToPoweBI.csproj",
+        "--",
+        "sync",
+        "--mode",
+        "full"
+      ],
+      "group": "none",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "Sync: Date Mode (All Projects)",
+      "type": "shell",
+      "command": "dotnet",
+      "args": [
+        "run",
+        "--project",
+        "${workspaceFolder}/AzureDevOpsToPoweBI/AzureDevOpsToPoweBI.csproj",
+        "--",
+        "sync",
+        "--mode",
+        "date"
+      ],
+      "group": "none",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "Sync: State Mode (All Projects)",
+      "type": "shell",
+      "command": "dotnet",
+      "args": [
+        "run",
+        "--project",
+        "${workspaceFolder}/AzureDevOpsToPoweBI/AzureDevOpsToPoweBI.csproj",
+        "--",
+        "sync",
+        "--mode",
+        "state"
+      ],
+      "group": "none",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "Sync: CM-APPS (Full Mode)",
+      "type": "shell",
+      "command": "dotnet",
+      "args": [
+        "run",
+        "--project",
+        "${workspaceFolder}/AzureDevOpsToPoweBI/AzureDevOpsToPoweBI.csproj",
+        "--",
+        "sync",
+        "--mode",
+        "full",
+        "--project",
+        "CM-APPS"
+      ],
+      "group": "none",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "Sync: c-Alice (Full Mode)",
+      "type": "shell",
+      "command": "dotnet",
+      "args": [
+        "run",
+        "--project",
+        "${workspaceFolder}/AzureDevOpsToPoweBI/AzureDevOpsToPoweBI.csproj",
+        "--",
+        "sync",
+        "--mode",
+        "full",
+        "--project",
+        "c-Alice"
+      ],
+      "group": "none",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": "$msCompile"
+    }
+  ]
+}

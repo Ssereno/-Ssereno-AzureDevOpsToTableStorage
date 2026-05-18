@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "AzureDevOpsToPoweBI": {
+      "commandName": "Project",
+      "commandLineArgs": "sync --mode full"
+    }
+  }
+}
