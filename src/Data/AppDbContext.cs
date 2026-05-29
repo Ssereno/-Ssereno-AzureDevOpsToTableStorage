@@ -16,6 +16,7 @@ namespace AzureDevOpsToPowerBI.Data
         public DbSet<UserStory> UserStories => Set<UserStory>();
         public DbSet<Bug> Bugs => Set<Bug>();
         public DbSet<TfsTask> Tasks => Set<TfsTask>();
+        public DbSet<Feature> Features => Set<Feature>();
 
         // Supporting tables
         public DbSet<Area> Areas => Set<Area>();
@@ -46,6 +47,12 @@ namespace AzureDevOpsToPowerBI.Data
             modelBuilder.Entity<TfsTask>(entity =>
             {
                 entity.ToTable("Tasks");
+                entity.HasKey(e => new { e.WorkItemId, e.ProjectKey });
+            });
+
+            modelBuilder.Entity<Feature>(entity =>
+            {
+                entity.ToTable("Features");
                 entity.HasKey(e => new { e.WorkItemId, e.ProjectKey });
             });
 

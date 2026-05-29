@@ -36,7 +36,7 @@ namespace AzureDevOpsToPowerBI.Manager
             string uri = string.Format(
                 "{0}/{1}/_odata/v4.0-preview/WorkItems" +
                 "?$Select=WorkItemId,Title,State,AreaSK,IterationSK,CreatedDate,ActivatedDate," +
-                "ClosedDate,ResolvedDate,CompletedDate,Severity,Custom_TicketID,Custom_TicketPriority,Custom_BugType" +
+                "ClosedDate,ResolvedDate,CompletedDate,Severity,StoryPoints" +
                 "&$filter=WorkItemType eq 'Bug' and startswith(Area/AreaPath,'{2}') and CreatedDate ge {3}" +
                 "&$orderby=CreatedDate desc",
                 tfsUri, projectName, areaPath, syncDate);

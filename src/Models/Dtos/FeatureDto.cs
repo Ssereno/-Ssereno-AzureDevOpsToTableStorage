@@ -4,9 +4,9 @@ using AzureDevOpsToPowerBI.Models.Entities;
 namespace AzureDevOpsToPowerBI.Models.Dtos
 {
     /// <summary>
-    /// Data Transfer Object for deserialising a User Story from the Azure DevOps Analytics OData feed.
+    /// Data Transfer Object for deserialising a Feature from the Azure DevOps Analytics OData feed.
     /// </summary>
-    public class UserStoryDto
+    public class FeatureDto
     {
         [JsonPropertyName("WorkItemId")]
         public int WorkItemId { get; set; }
@@ -57,10 +57,10 @@ namespace AzureDevOpsToPowerBI.Models.Dtos
         public string? CompletedDate { get; set; }
 
         /// <summary>
-        /// Maps this DTO to a <see cref="Entities.UserStory"/> database entity,
+        /// Maps this DTO to a <see cref="Entities.Feature"/> database entity,
         /// applying effective-date logic from <see cref="InternalHelper"/>.
         /// </summary>
-        public Entities.UserStory ToEntity(string projectKey) => new()
+        public Entities.Feature ToEntity(string projectKey) => new()
         {
             WorkItemId        = WorkItemId,
             ProjectKey        = projectKey,

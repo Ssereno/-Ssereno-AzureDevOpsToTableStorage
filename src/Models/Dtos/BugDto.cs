@@ -41,6 +41,10 @@ namespace AzureDevOpsToPowerBI.Models.Dtos
         [JsonPropertyName("Severity")]
         public string? Severity { get; set; }
 
+        /// <summary>Story points estimate.</summary>
+        [JsonPropertyName("StoryPoints")]
+        public double? StoryPoints { get; set; }
+
         [JsonPropertyName("ParentWorkItemId")]
         public string? ParentWorkItemId { get; set; }
 
@@ -67,6 +71,7 @@ namespace AzureDevOpsToPowerBI.Models.Dtos
             IterationSK          = IterationSK,
             CreatedDate          = CreatedDate,
             Severity             = Severity,
+            StoryPoints          = StoryPoints,
             Custom_BugType       = Custom_BugType,
             Custom_TicketID      = Custom_TicketID,
             Custom_TicketPriority = Custom_TicketPriority,

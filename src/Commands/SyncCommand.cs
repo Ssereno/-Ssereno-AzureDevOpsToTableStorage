@@ -120,18 +120,21 @@ namespace AzureDevOpsToPowerBI.Commands
                     await repo.DeleteByDateAsync<UserStory>(project.ProjectKey, syncDate);
                     await repo.DeleteByDateAsync<Bug>(project.ProjectKey, syncDate);
                     await repo.DeleteByDateAsync<TfsTask>(project.ProjectKey, syncDate);
+                    await repo.DeleteByDateAsync<Feature>(project.ProjectKey, syncDate);
                 }
                 else if (mode.Equals("state", StringComparison.OrdinalIgnoreCase))
                 {
                     await repo.DeleteNonClosedAsync<UserStory>(project.ProjectKey);
                     await repo.DeleteNonClosedAsync<Bug>(project.ProjectKey);
                     await repo.DeleteNonClosedAsync<TfsTask>(project.ProjectKey);
+                    await repo.DeleteNonClosedAsync<Feature>(project.ProjectKey);
                 }
                 else // full
                 {
                     await repo.DeleteAllAsync<UserStory>(project.ProjectKey);
                     await repo.DeleteAllAsync<Bug>(project.ProjectKey);
                     await repo.DeleteAllAsync<TfsTask>(project.ProjectKey);
+                    await repo.DeleteAllAsync<Feature>(project.ProjectKey);
                 }
             }
         }
@@ -151,6 +154,20 @@ namespace AzureDevOpsToPowerBI.Commands
             var areaMgr    = new AreaManager(httpFactory, loggerFactory.CreateLogger<AreaManager>());
             var iterMgr    = new IterationManager(httpFactory, loggerFactory.CreateLogger<IterationManager>());
             var capMgr     = new SprintCapacityManager(httpFactory, loggerFactory.CreateLogger<SprintCapacityManager>());
+            var featureMgr = new FeatureManager(httpFactory, loggerFactory.CreateLogger<FeatureManager>());
+
+            // Always sync supporting data
+            var areas = await areaMgr.GetAreasAsync(tfsUri, pat,
+                project.ProjectKey, project.ProjectName, project.AreaPath);
+            await repo.UpsertAreasAsync(areas);
+
+            var iterations = await iterMgr.GetTfsIterationsAsync(tfsUri, pat,
+                project.ProjectKey, project.ProjectName, project.TeamName, project.IterationLevel);
+            await repo.UpsertIterationsAsync(iterations);
+
+            var capacity = await capMgr.GetCapacityAsync(tfsUri, pat,
+                project.ProjectKey, project.ProjectName, project.TeamName);
+            await repo.UpsertSprintCapacitiesAsync(capacity);
 
             if (!mode.Equals("state", StringComparison.OrdinalIgnoreCase))
             {
@@ -167,6 +184,11 @@ namespace AzureDevOpsToPowerBI.Commands
                 var bugs = await bugManager.GetBugsAsync(tfsUri, pat,
                     project.ProjectKey, project.ProjectName, project.AreaPath, settings.WorkItemSyncDate);
                 await repo.UpsertWorkItemsAsync(bugs);
+
+                var features = await featureMgr.GetTfsFeaturesAsync(tfsUri, pat,
+                    project.ProjectKey, project.ProjectName, project.AreaPath,
+                    settings.WorkItemSyncDate, settings.Tags);
+                await repo.UpsertWorkItemsAsync(features);
             }
             else
             {
@@ -183,22 +205,15 @@ namespace AzureDevOpsToPowerBI.Commands
                 var bugs = await bugManager.GetBugsAsync(tfsUri, pat,
                     project.ProjectKey, project.ProjectName, project.AreaPath, settings.WorkItemSyncDate);
                 await repo.UpsertWorkItemsAsync(bugs);
+
+                var features = await featureMgr.GetTfsFeaturesAsync(tfsUri, pat,
+                    project.ProjectKey, project.ProjectName, project.AreaPath,
+                    settings.WorkItemSyncDate, settings.Tags);
+                await repo.UpsertWorkItemsAsync(features);
             }
 
-            // Always sync supporting data
-            var areas = await areaMgr.GetAreasAsync(tfsUri, pat,
-                project.ProjectKey, project.ProjectName, project.AreaPath);
-            await repo.UpsertAreasAsync(areas);
-
-            var iterations = await iterMgr.GetTfsIterationsAsync(tfsUri, pat,
-                project.ProjectKey, project.ProjectName, project.TeamName, project.IterationLevel);
-            await repo.UpsertIterationsAsync(iterations);
-
-            var capacity = await capMgr.GetCapacityAsync(tfsUri, pat,
-                project.ProjectKey, project.ProjectName, project.TeamName);
-            await repo.UpsertSprintCapacitiesAsync(capacity);
-
-            await repo.EnsureProjectProfileAsync(project.ProjectKey);
+            // TODO Remove
+            //await repo.EnsureProjectProfileAsync(project.ProjectKey);
         }
     }
 

@@ -3,6 +3,7 @@ using System;
 using AzureDevOpsToPowerBI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AzureDevOpsToPowerBI.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260519211818_ConvertDecimalToDouble")]
+    partial class ConvertDecimalToDouble
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.0");
@@ -86,9 +89,6 @@ namespace AzureDevOpsToPowerBI.Data.Migrations
                     b.Property<string>("State")
                         .HasColumnType("TEXT");
 
-                    b.Property<double?>("StoryPoints")
-                        .HasColumnType("REAL");
-
                     b.Property<string>("TagNames")
                         .HasColumnType("TEXT");
 
@@ -98,61 +98,6 @@ namespace AzureDevOpsToPowerBI.Data.Migrations
                     b.HasKey("WorkItemId", "ProjectKey");
 
                     b.ToTable("Bugs", (string)null);
-                });
-
-            modelBuilder.Entity("AzureDevOpsToPowerBI.Models.Entities.Feature", b =>
-                {
-                    b.Property<int>("WorkItemId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("ProjectKey")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ActivatedDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("AreaSK")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ClosedDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("CompletedDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("CreatedDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<double?>("CycleTimeDays")
-                        .HasColumnType("REAL");
-
-                    b.Property<string>("IterationSK")
-                        .HasColumnType("TEXT");
-
-                    b.Property<double?>("LeadTimeDays")
-                        .HasColumnType("REAL");
-
-                    b.Property<int?>("ParentWorkItemId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("ResolvedDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("State")
-                        .HasColumnType("TEXT");
-
-                    b.Property<double?>("StoryPoints")
-                        .HasColumnType("REAL");
-
-                    b.Property<string>("TagNames")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("WorkItemId", "ProjectKey");
-
-                    b.ToTable("Features", (string)null);
                 });
 
             modelBuilder.Entity("AzureDevOpsToPowerBI.Models.Entities.Iteration", b =>

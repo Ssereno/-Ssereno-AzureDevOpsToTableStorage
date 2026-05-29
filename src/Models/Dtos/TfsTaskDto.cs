@@ -33,10 +33,10 @@ namespace AzureDevOpsToPowerBI.Models.Dtos
         public int? ParentWorkItemId { get; set; }
 
         [JsonPropertyName("OriginalEstimate")]
-        public decimal? OriginalEstimate { get; set; }
+        public double? OriginalEstimate { get; set; }
 
         [JsonPropertyName("CompletedWork")]
-        public decimal? CompletedWork { get; set; }
+        public double? CompletedWork { get; set; }
 
         [JsonPropertyName("CreatedDate")]
         public string? CreatedDate { get; set; }

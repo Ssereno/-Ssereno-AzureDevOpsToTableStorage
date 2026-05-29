@@ -9,6 +9,9 @@ namespace AzureDevOpsToPowerBI.Models.Entities
         /// <summary>Bug severity (e.g. 1 - Critical, 2 - High).</summary>
         public string? Severity { get; set; }
 
+        /// <summary>Story points estimate.</summary>
+        public double? StoryPoints { get; set; }
+
         /// <summary>Custom field: bug classification type.</summary>
         public string? Custom_BugType { get; set; }
 

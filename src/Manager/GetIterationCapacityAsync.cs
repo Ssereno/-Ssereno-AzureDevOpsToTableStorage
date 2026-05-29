@@ -28,6 +28,19 @@ namespace AzureDevOpsToPowerBI.Manager
             string tfsUri, string pat,
             string projectKey, string projectName, string teamName)
         {
+            if (tfsUri.StartsWith("analytics.", StringComparison.OrdinalIgnoreCase))
+            {
+                tfsUri = tfsUri.Substring("analytics.".Length);
+            }
+            else if (tfsUri.StartsWith("https://analytics.", StringComparison.OrdinalIgnoreCase))
+            {
+                tfsUri = "https://" + tfsUri.Substring("https://analytics.".Length);
+            }
+            else if (tfsUri.StartsWith("http://analytics.", StringComparison.OrdinalIgnoreCase))
+            {
+                tfsUri = "http://" + tfsUri.Substring("http://analytics.".Length);
+            }
+
             using var client = _httpClientFactory.CreateClient();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic",
@@ -99,7 +112,12 @@ namespace AzureDevOpsToPowerBI.Manager
             foreach (var member in capResult.Value)
             {
                 double dailyCap = member.Activities?.Sum(a => a.CapacityPerDay) ?? 0;
-                int daysOff = member.DaysOff?.Sum(d => CountWorkdays(d.Start.Date, d.End.Date)) ?? 0;
+                int daysOff = member.DaysOff?.Sum(d =>
+                {
+                    var overlapStart = d.Start.Date < start ? start : d.Start.Date;
+                    var overlapEnd = d.End.Date > end ? end : d.End.Date;
+                    return overlapStart <= overlapEnd ? CountWorkdays(overlapStart, overlapEnd) : 0;
+                }) ?? 0;
                 total += dailyCap * Math.Max(0, workdays - daysOff);
             }
 
@@ -113,13 +131,13 @@ namespace AzureDevOpsToPowerBI.Manager
 
         // --- Response models ---
 
-        private class TeamIterationsResponse
+        public class TeamIterationsResponse
         {
             [JsonPropertyName("value")]
             public List<TeamIteration> Value { get; set; } = [];
         }
 
-        private class TeamIteration
+        public class TeamIteration
         {
             [JsonPropertyName("id")]
             public Guid Id { get; set; }
@@ -134,7 +152,7 @@ namespace AzureDevOpsToPowerBI.Manager
             public TeamIterationAttributes? Attributes { get; set; }
         }
 
-        private class TeamIterationAttributes
+        public class TeamIterationAttributes
         {
             [JsonPropertyName("startDate")]
             public DateTime? StartDate { get; set; }
@@ -143,13 +161,13 @@ namespace AzureDevOpsToPowerBI.Manager
             public DateTime? FinishDate { get; set; }
         }
 
-        private class TeamCapacityResponse
+        public class TeamCapacityResponse
         {
-            [JsonPropertyName("value")]
+            [JsonPropertyName("teamMembers")]
             public List<TeamMemberCapacity> Value { get; set; } = [];
         }
 
-        private class TeamMemberCapacity
+        public class TeamMemberCapacity
         {
             [JsonPropertyName("activities")]
             public List<Activity>? Activities { get; set; }
@@ -158,13 +176,13 @@ namespace AzureDevOpsToPowerBI.Manager
             public List<DateRange>? DaysOff { get; set; }
         }
 
-        private class Activity
+        public class Activity
         {
             [JsonPropertyName("capacityPerDay")]
             public double CapacityPerDay { get; set; }
         }
 
-        private class DateRange
+        public class DateRange
         {
             [JsonPropertyName("start")]
             public DateTime Start { get; set; }

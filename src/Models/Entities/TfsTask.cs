@@ -7,9 +7,9 @@ namespace AzureDevOpsToPowerBI.Models.Entities
     public class TfsTask : WorkItemBase
     {
         /// <summary>Original estimate in hours.</summary>
-        public decimal? OriginalEstimate { get; set; }
+        public double? OriginalEstimate { get; set; }
 
         /// <summary>Completed work in hours.</summary>
-        public decimal? CompletedWork { get; set; }
+        public double? CompletedWork { get; set; }
     }
 }

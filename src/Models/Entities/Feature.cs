@@ -1,10 +1,10 @@
 namespace AzureDevOpsToPowerBI.Models.Entities
 {
     /// <summary>
-    /// Database entity for a User Story work item.
+    /// Database entity for a Feature work item.
     /// Inherits common fields from <see cref="WorkItemBase"/>.
     /// </summary>
-    public class UserStory : WorkItemBase
+    public class Feature : WorkItemBase
     {
         /// <summary>Story points estimate.</summary>
         public double? StoryPoints { get; set; }
